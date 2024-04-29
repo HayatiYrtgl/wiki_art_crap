@@ -16,7 +16,7 @@ class ScrapDataAsync:
             return await response.text()
 
     async def get_requests(self, painter, url, session):
-        self.current_painter = painter
+        painter = painter
         content = await self.get_content(session, url)
         return content
 
@@ -26,8 +26,8 @@ class ScrapDataAsync:
         href_list = [self.main_url + href["href"] for href in all_hrefs]
         return href_list
 
-    async def scrap_image_href(self, content):
-
+    @staticmethod
+    async def scrap_image_href(content):
         soup = BeautifulSoup(content, "lxml")
         image = soup.select_one(".btn-overlay-wrapper-artwork img")
         return image["src"]
@@ -41,6 +41,7 @@ class ScrapDataAsync:
                 f.write(await response.read())
 
     async def main_scraping(self):
+        """This method contains all functions to scrap"""
         async with aiohttp.ClientSession() as session:
             for painter in self.painters_names:
                 url = self.base_url.format(painter)
@@ -59,10 +60,10 @@ class ScrapDataAsync:
                         print("başarisiz")
 
 
-# Asenkron işlemi başlat
+
 async def start_async_scraping():
     scrap_data = ScrapDataAsync()
     await scrap_data.main_scraping()
 
-# Ana asenkron döngüyü çalıştır
+
 asyncio.run(start_async_scraping())
