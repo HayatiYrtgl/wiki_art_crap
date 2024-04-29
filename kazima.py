@@ -5,8 +5,7 @@ from bs4 import BeautifulSoup
 
 class ScrapDataAsync:
     def __init__(self):
-        self.painters_names = ["salvador-dali", "leonardo-da-vinci", "vincent-van-gogh",
-                               "claude-monet", "pablo-picasso", "sandro-botticelli",
+        self.painters_names = ["leonardo-da-vinci", "pablo-picasso", "sandro-botticelli",
                                "henri-matisse", "raphael", "frida-kahlo",
                                "paul-cezanne", "michelangelo"]
         self.base_url = "https://www.wikiart.org/en/{}/all-works/text-list"
@@ -29,6 +28,7 @@ class ScrapDataAsync:
         return href_list
 
     async def scrap_image_href(self, content):
+
         soup = BeautifulSoup(content, "lxml")
         image = soup.select_one(".btn-overlay-wrapper-artwork img")
         return image["src"]
@@ -51,10 +51,13 @@ class ScrapDataAsync:
 
             for painter, url_list in self.all_painting_links:
                 for num, url in enumerate(url_list):
-                    content = await self.get_requests(url=url, painter=painter, session=session)
-                    image_src = await self.scrap_image_href(content=content)
-                    await self.download_image(url=image_src, painter=painter, file_name=num, session=session)
-                    print("başarılı")
+                    try:
+                        content = await self.get_requests(url=url, painter=painter, session=session)
+                        image_src = await self.scrap_image_href(content=content)
+                        await self.download_image(url=image_src, painter=painter, file_name=num, session=session)
+                        print("başarılı")
+                    except:
+                        print("başarisiz")
 
 
 # Asenkron işlemi başlat
