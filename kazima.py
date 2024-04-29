@@ -3,11 +3,10 @@ import aiohttp
 import asyncio
 from bs4 import BeautifulSoup
 
+
 class ScrapDataAsync:
     def __init__(self):
-        self.painters_names = ["leonardo-da-vinci", "pablo-picasso", "sandro-botticelli",
-                               "henri-matisse", "raphael", "frida-kahlo",
-                               "paul-cezanne", "michelangelo"]
+        self.painters_names = ["pyotr-konchalovsky"]
         self.base_url = "https://www.wikiart.org/en/{}/all-works/text-list"
         self.main_url = "https://www.wikiart.org"
         self.all_painting_links = []
